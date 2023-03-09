@@ -249,6 +249,7 @@ void decode(std::string fileToDecode, std::string outputName) {
 
 	unsigned char c;
 	ifs.read((char*)&c, sizeof(c));
+	int fileSize = -1;
 
 	Node* Vec = new Node[c + c - 1];
 	int k = 0;
@@ -257,10 +258,12 @@ void decode(std::string fileToDecode, std::string outputName) {
 		unsigned int freq;
 		ifs.read((char*)&let, sizeof(c));
 		ifs.read((char*)&freq, sizeof(freq));
+		fileSize += freq;
 		Vec[k] = Node(freq, let);
 		k++;
 		freqTable[let] = freq;
 	}
+
 	Node decTree = getTree(Vec, k);
 
 	std::map<std::string, unsigned char> deCodes;
@@ -270,7 +273,9 @@ void decode(std::string fileToDecode, std::string outputName) {
 
 	std::ofstream ofs(outputName, std::ios::binary);
 
-	while (!ifs.eof()) {
+	int counter = 0;
+
+	while (!ifs.eof() && counter < fileSize) {
 
 		unsigned char cell;
 		ifs.read((char*)&cell, sizeof(cell));
@@ -285,10 +290,14 @@ void decode(std::string fileToDecode, std::string outputName) {
 
 			if (it != deCodes.end()) {
 				ofs.write((char*)&deCodes[code], sizeof(char));
+				std::cout << deCodes[code];
+				counter++;
+				if (counter == fileSize) break;
 				code = "";
 			}
 		}
 	}
+	std::cout << std::endl;
 	delete[] Vec;
 	ifs.close();
 	ofs.close();
