@@ -1,10 +1,23 @@
 #include "main.h"
 
 int main() {
-    std::string plainText = "plain_text.txt";
-    std::string cipherText = "encoded.txt";
-    std::string decodedText = "decoded.txt";
+    int mode;
+    std::cout << "Select mode. For encoding enter 0, for decoding enter 1: ";
+    std::cin >> mode;
 
-    encode(plainText, cipherText);
-    decode(cipherText, decodedText);
+    std::string decodedFile = "decoded.txt";
+    std::string encodedFile = "encoded.txt";
+
+    if (mode) {
+        std::string fileName;
+        std::cout << "Print name of file, which you want to decode: ";
+        std::cin >> fileName;
+        decode(fileName, decodedFile);
+    }
+    else {
+        std::string fileName;
+        std::cout << "Print name of file, which you want to encode: ";
+        std::cin >> fileName;
+        encode(fileName, encodedFile);
+    }
 }

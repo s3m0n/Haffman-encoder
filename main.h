@@ -162,6 +162,11 @@ void encode(std::string inputName, std::string outputName) {
 
 	std::ifstream file(inputName, std::ios::binary);
 
+	if (!file.is_open()) {
+		std::cout << "Error. Input file does not exist" << std::endl;
+		return;
+	}
+
 	std::map<unsigned char, int> freqTable;
 
 	while (!file.eof()) {
@@ -244,6 +249,11 @@ void encode(std::string inputName, std::string outputName) {
 
 void decode(std::string fileToDecode, std::string outputName) {
 	std::ifstream ifs(fileToDecode, std::ios::binary);
+
+	if (!ifs.is_open()) {
+		std::cout << "Error. Input file does not exist" << std::endl;
+		return;
+	}
 
 	std::map<unsigned char, unsigned int> freqTable;
 
